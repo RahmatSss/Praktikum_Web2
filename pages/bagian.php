@@ -15,7 +15,7 @@ include "database/connection.php"
 </div>
 <div class="row mt-3">
     <div class="col">
-    <?php
+        <?php
         $selectSQL = "SELECT * FROM bagian";
         $result = mysqli_query($connection, $selectSQL);
         if (!$result) {
@@ -36,6 +36,9 @@ include "database/connection.php"
         }
         ?>
 
+
+
+
         <table class="table bg-white rounded shadow-sm  table-hover">
             <thead>
                 <tr>
@@ -45,7 +48,7 @@ include "database/connection.php"
                 </tr>
             </thead>
             <tbody>
-            <?php
+                <?php
                 $no = 1;
                 while ($row = mysqli_fetch_assoc($result)) {
                 ?>
@@ -57,10 +60,10 @@ include "database/connection.php"
                             <?php echo $row["nama"] ?>
                         </td>
                         <td>
-                            <a href="?page=bagian_ubah&id=<?php echo $row["id"] ?>" class="btn btn-primary">
+                            <a href="?page=bagianubah&id=<?php echo $row["id"] ?>" class="btn btn-primary">
                                 <i class="fa fa-edit"></i> Ubah
                             </a>
-                            <a href="?page=bagian_hapus&id=<?php echo $row["id"] ?>" onclick="javascript: return confirm('Konfirmasi data akan dihapus?')" class="btn btn-danger">
+                            <a href="?page=bagianhapus&id=<?php echo $row["id"] ?>" onclick="javascript: return confirm('Konfirmasi data akan dihapus?')" class="btn btn-danger">
                                 <i class="fa fa-trash"></i> Hapus
                             </a>
                         </td>
@@ -70,8 +73,5 @@ include "database/connection.php"
                 ?>
             </tbody>
         </table>
-
     </div>
-</div>
-
 </div>
