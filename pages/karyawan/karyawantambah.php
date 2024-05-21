@@ -130,7 +130,7 @@
                    <select class="form-select" aria-label="Default select example" name="bagian_id">
                         <option value="" selected> -- Pilih Bagiain --</option>
                         <?php
-                            while ($row = mysqli_fetch_assoc($resultt)) {
+                            while ($row = mysqli_fetch_assoc($result)) {
                         ?>
                             <option value="<?php echo $row["id"] ?>"><?php echo $row["nama"]?></option>
                             <?php
