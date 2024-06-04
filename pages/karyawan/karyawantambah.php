@@ -1,6 +1,6 @@
 <div id="top" class="row mb-3">
     <div class="col">
-        <h3>Tambah Data Karyawan</h3>
+        <h3>Ubah Data Karyawan</h3>
     </div>
 </div>
 <div class="row mb-3">
@@ -23,47 +23,41 @@
             $status_karyawan = $_POST['status_karyawan'];
             $bagian_id = $_POST['bagian_id'];
 
-            $sudahAda = false;
-            $checkSQL = "SELECT * FROM karyawan WHERE nik='$nik'";
-            $resultcheck = mysqli_query($connection, $checkSQL);
-            if (mysqli_num_rows($resultcheck) > 0) {
-                $sudahAda = true;
-            }
-
-            if ($sudahAda) {
-        ?>
+          $updateSQL = "UPDATE karyawan SET"
+                    nama ='$nama',
+                    tanggal_mulai ='$tanggal_mulai',
+                    gaji_pokok = '$gaji_pokok',
+                    status_karyawan = '$status_karyawan',
+                    bagian_id = $bagian_id
+                    WHERE nik = '$nik';
+          $result = mysqli_query($connection, $updateSQL);
+          if (!$result) {
+            ?>
                 <div class="alert alert-danger" role="alert">
-                    <i class="fab fa-exclamation-circle"></i>
-                    Nomor Induk Karyawan (NIK) sama sudah ada
+                    <i class="fa fa-exclamation-circle"></i>
+                    <?php echo mysqli_error($connection) ?>
                 </div>
-                <?php
+            <?php
             } else {
-                $insertSQL = "INSERT INTO karyawan SET 
-                nik='$nik', 
-                nama='$nama', 
-                tanggal_mulai='$tanggal_mulai', 
-                gaji_pokok=$gaji_pokok, 
-                status_karyawan='$status_karyawan', 
-                bagian_id=$bagian_id";
-                $result = mysqli_query($connection, $insertSQL);
-                if (!$result) {
-                ?>
-                    <div class="alert alert-danger" role="alert">
-                        <i class="fab fa-exclamation"></i>
-                        <?php echo mysqli_error($connection) ?>
-                    </div>
-                <?php
-                } else {
-                ?>
-                    <div class="alert alert-success" role="alert">
-                        <i class="fab fa-check-circle"></i>
-                        Data berhasil disimpan
-                    </div>
+            ?>
+            <div class="alert alert-success" role="alert">
+                <i class="fa fa-check-circle"></i>
+                Ubah data berhasil disimpan
+            </div>
         <?php
-                }
             }
+        }  
+        $nik = $_GET['nik'];
+        $selectSQL = "SELECT * FROM karyawan WHERE nik = $nik";
+        $result = mysqli_query($connection, $selectSQL);
+        if (!$result || mysqli_num_rows($result) == 0){
+            echo '<meta http-equiv="refresh" content="0;url=?page=karyawan">';
         }
-        ?>
+        $row = mysqli_fetch_assoc($result);
+        $tetap_checked = $row["status_karyawan"] == "TETAP" ? " checked" : "";
+        $kontrak_checked = $row["status_karyawan"] == "KONTRAK" ? " checked" : "";
+        $magang_checked = $row["status_karyawan"] == "MAGANG" ? " checked" : "";
+        ?>    
     </div>
 </div>
 <div id="inputan" class="row mb-3">
@@ -72,35 +66,35 @@
             <form action="" method="POST">
                 <div class="mb-3 mt-3">
                     <label for="nik" class="form-label">NIK</label>
-                    <input type="text" class="form-control" id="nik" name="nik" placeholder="misal : 0001" required>
+                    <input type="text" class="form-control" nik="nik" name="nik"  value="<?php echo $nik ?>" readonly>
                 </div>
                 <div class="mb-3 mt-3">
                     <label for="nama" class="form-label">Nama</label>
-                    <input type="text" class="form-control" id="nama" name="nama" placeholder="misal : Fulan" required>
+                    <input type="text" class="form-control" id="nama" name="nama" placeholder="misal : Fulan" value="<?php echo $row['nama'] ?>" required>
                 </div>
                 <div class="mb-3 mt-3">
                     <label for="tanggal_mulai" class="form-label">tanggal_mulai</label>
-                    <input type="date" class="form-control" id="tanggal_mulai" name="tanggal_mulai" required>
+                    <input type="date" class="form-control" id="tanggal_mulai" name="tanggal_mulai" value="<?php echo $row['tanggal_mulai'] ?>" required>
                 </div>
                 <div class="mb-3 mt-3">
                     <label for="gaji_pokok" class="form-label">Gaji Pokok</label>
-                    <input type="number" class="form-control" id="gaji_pokok" name="gaji_pokok" required>
+                    <input type="number" class="form-control" id="gaji_pokok" name="gaji_pokok" value="<?php echo $row['gaji_pokok'] ?>" required>
                 </div>
                 <label class="form-label">Status Karyawan</label>
                 <div class="mb-3 mt-3">
-                    <input class="form-check-input" type="radio" name="status_karyawan" id="TETAP" value="TETAP" required>
+                    <input class="form-check-input" type="radio" name="status_karyawan" id="TETAP" value="TETAP" <?php echo $tetap_checked ?> required>
                     <label class="form-check-label" for="TETAP">
                         Tetap
                     </label>
                 </div>
                 <div class="mb-3 mt-3">
-                    <input class="form-check-input" type="radio" name="status_karyawan" id="KONTRAK" value="KONTRAK" required>
+                    <input class="form-check-input" type="radio" name="status_karyawan" id="KONTRAK" value="KONTRAK" <?php echo $kontrak_checked ?> required>
                     <label class="form-check-label" for="KONTRAK">
                         Kontrak
                     </label>
                 </div>
                 <div class="mb-3 mt-3">
-                    <input class="form-check-input" type="radio" name="status_karyawan" id="MAGANG" value="MAGANG" required>
+                    <input class="form-check-input" type="radio" name="status_karyawan" id="MAGANG" value="MAGANG" <?php echo $magang_checked ?> required>
                     <label class="form-check-label" for="MAGANG">
                         Magang
                     </label>
@@ -108,9 +102,9 @@
                 <div class="mb-3 mt-3">
                     <label for="bagian_id" class="form-label">Bagian</label>
                      <?php
-                        $selectSQL = "SELECT * FROM bagian";
-                        $result = mysqli_query($connection, $selectSQL);
-                        if (!$result) {
+                        $selectSQLBagian = "SELECT * FROM bagian";
+                        $result_bagian = mysqli_query($connection, $selectSQLBagian);
+                        if (!$result_bagian) {
                     ?>
                     <div class="alert alert-danger" role="alert">
                         <?php echo mysqli_error($connection) ?>
@@ -118,7 +112,7 @@
                     <?php
                         return;
                     }
-                        if (mysqli_num_rows($result) == 0) {
+                        if (mysqli_num_rows($result_bagian) == 0) {
                     ?>
                     <div class="alert alert-light" role="alert">
                         data kosong
@@ -130,9 +124,11 @@
                    <select class="form-select" aria-label="Default select example" name="bagian_id">
                         <option value="" selected> -- Pilih Bagiain --</option>
                         <?php
-                            while ($row = mysqli_fetch_assoc($result)) {
+                            while ($row_bagian = mysqli_fetch_assoc($result_bagian)) {
+                                $bagian_selected = $row["bagian_id"] == $row_bagian["id"] ? " selected" : "";
                         ?>
-                            <option value="<?php echo $row["id"] ?>"><?php echo $row["nama"]?></option>
+                            <option value="<?php echo $row_bagian["id"] ?>"<?php echo $row_bagian["nama"]?>>
+                            </option>
                             <?php
                             }
                             ?>
