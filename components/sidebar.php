@@ -1,15 +1,50 @@
+<?php
+// Atur semua item navigasi ke "fw-bold" secara default
+$dashboard_active = $bagian_active = $karyawan_active = $penggajian_active = "fw-bold";
+
+// Dapatkan halaman saat ini dari URL, default ke "dashboard" jika tidak diatur
+$page = $_GET["page"] ?? "dashboard";
+
+// Tentukan item navigasi mana yang harus aktif
+switch ($page) {
+    case "dashboard":
+        $dashboard_active = "active";
+        break;
+    case "bagian":
+    case "bagiantambah":
+    case "bagianubah":
+    case "bagianhapus":
+        $bagian_active = "active";
+        break;
+    case "karyawan":
+    case "karyawantambah":
+    case "karyawanubah":
+    case "karyawanhapus":
+        $karyawan_active = "active";
+        break;
+    case "pilihbulantahunpenggajian":
+    case "penggajian":
+    case "pilihkaryawanpenggajian":
+    case "penggajianhapus":
+        $penggajian_active = "active";
+        break;
+    default:
+        $dashboard_active = "active";
+}
+?>
+
 <div class="bg-white" id="sidebar-wrapper">
             <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom"><i
                     class="fas fa-money-bill me-2"></i>Penggajian</div>
             <div class="list-group list-group-flush my-3">
-                <a href="?page=dashboard" class="list-group-item list-group-item-action bg-transparent second-text active"><i
+                <a href="?page=dashboard" class="list-group-item list-group-item-action bg-transparent second-text <?php echo $dashboard_active ?>"><i
                         class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
                 <a href="?page=bagian"
-                    class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                    class="list-group-item list-group-item-action bg-transparent second-text <?php echo $bagian_active ?>"><i
                         class="fas fa-building me-2"></i>Bagian</a>
-                <a href="?page=karyawan" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                <a href="?page=karyawan" class="list-group-item list-group-item-action bg-transparent second-text <?php echo $karyawan_active ?>"><i
                         class="fas fa-users me-2"></i>Karyawan</a>
-                <a href="?page=pilihbulantahunpenggajian" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                <a href="?page=pilihbulantahunpenggajian" class="list-group-item list-group-item-action bg-transparent second-text <?php echo $penggajian_active ?>"><i
                         class="fas fa-money-bill me-2"></i>Penggajian</a>
                  <a href="?page=pengguna" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
                         class="fas fa-user me-2"></i>Pengguna</a>

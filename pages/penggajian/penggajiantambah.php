@@ -11,50 +11,53 @@
 </div>
 <div id="pesan" class="row mb-3">
 	<div class="col">
-		<?php 
+		<?php
 		include "database/connection.php";
 
 		if (isset($_POST['karyawan_nik'])) {
-			$karyawan_nik = $_POST['karyawan_nik'];
-			$bulan_select = $_POST['bulan_select'];
-			$tahun = $_POST['tahun'];
-			$gaji_pokok = $_POST['gaji_pokok'];
-			
-			$checkSQL = "SELECT * FROM penggajian WHERE karyawan_nik = '$karyawan_nik' AND bulan='$bulan_select' AND tahun=$tahun";
-			$result = mysqli_query($connection, $checkSQL);
-			if (mysqli_num_rows($result) > 0) {
-		?>	
-			<div class="alert alert-danger" rol="alert">
-				<i class="fa fa-exclamation-circle"></i>
-				Data gaji <?= $bulan_select ?> tahun <?= $tahun ?> sudah ada
-			</div>
-			<?php
-			} else {
-			?>
-				<div class="alert alert-success" role="alert">
-					<i class="fa fa-exclamation-circle"></i>
-					<?php echo mysqli_error($connection) ?>
-				</div>
-			<?php
-			} else {
-			?>
-				<div class="alert alert-success" role="alert">   
-					<i class="fa fa-check-circle"></i>
-					Data berhasil disimpan
-				</div>
+		    $karyawan_nik = $_POST['karyawan_nik'];
+		    $bulan_select = $_POST['bulan_select'];
+		    $tahun = $_POST['tahun'];
+		    $gaji_pokok = $_POST['gaji_pokok'];
+		    
+		    $checkSQL = "SELECT * FROM penggajian WHERE karyawan_nik = '$karyawan_nik' AND bulan='$bulan_select' AND tahun=$tahun";
+		    $result = mysqli_query($connection, $checkSQL);
+		    if (mysqli_num_rows($result) > 0) {
+		?>  
+		        <div class="alert alert-danger" role="alert">
+		            <i class="fa fa-exclamation-circle"></i>
+		            Data gaji <?= $bulan_select ?> tahun <?= $tahun ?> sudah ada
+		        </div>
 		<?php
-			}
-		}
-	}
-
-		$nik = $_GET['nik'];
-		$selectSQL = "SELECT * FROM karyawan WHERE nik = $nik";
-		$result = mysqli_query($connection, $selectSQL);
-		if (!$result || mysqli_num_rows($result) == 0) {
-			echo '<meta http-equiv="refresh" content="0;url=?page=pilihkaryawanpenggajian">';
-		}
-		$row = mysqli_fetch_assoc($result);
+		    } else {
+		        $insertSQL = "INSERT INTO penggajian (karyawan_nik, bulan, tahun, gaji_pokok) VALUES ('$karyawan_nik', '$bulan_select', '$tahun', '$gaji_pokok')";
+		        if (mysqli_query($connection, $insertSQL)) {
 		?>
+		            <div class="alert alert-success" role="alert">
+		                <i class="fa fa-check-circle"></i>
+		                Data berhasil disimpan
+		            </div>
+		<?php
+		        } else {
+		?>
+		            <div class="alert alert-danger" role="alert">
+		                <i class="fa fa-exclamation-circle"></i>
+		                <?php echo mysqli_error($connection) ?>
+		            </div>
+		<?php
+		        }
+		    }
+		}
+
+			$nik = $_GET['nik'];
+			$selectSQL = "SELECT * FROM karyawan WHERE nik = $nik";
+			$result = mysqli_query($connection, $selectSQL);
+			if (!$result || mysqli_num_rows($result) == 0) {
+			    echo '<meta http-equiv="refresh" content="0;url=?page=pilihkaryawanpenggajian">';
+			    exit;
+			}
+			$row = mysqli_fetch_assoc($result);
+			?>
 	</div>
 </div>
 <div id="inputan" class="row mb-3">
@@ -65,8 +68,6 @@
 					<label for="karyawan_nik" class="form-label">NIK</label>
 					<input type="text" class="form-control" value="<?php echo $row["nik"] ?>" readonly>
 				</div>
-			</div>
-			<div class="row">
 				<div class="col-md-6 mb-3 mt-3">
 					<label for="nama" class="form-label">Nama</label>
 					<input type="text" class="form-control" value="<?php echo $row["nama"] ?>" readonly>
@@ -77,21 +78,13 @@
 					<label for="tanggal_mulai" class="form-label">Tanggal Mulai Bekerja</label>
 					<input type="text" class="form-control" value="<?php echo $row["tanggal_mulai"] ?>" readonly>
 				</div> 
-			</div> 
-			<div class="row">
 				<div class="col-md-6 mb-3 mt-3">
 					<label for="gaji_pokok" class="form-label">Gaji Pokok</label>
 					<input type="text" class="form-control" value="<?php echo $row["gaji_pokok"] ?>" readonly>
 				</div> 
-			</div> 
+			</div> 	
 			<div class="row">
-				<div class="col-md-6 mb-3 mt-3">
-					<label for="gaji_pokok" class="form-label">Gaji Pokok</label>
-					<input type="text" class="form-control" value="<?php echo $row["gaji_pokok"] ?>" readonly>
-				</div> 
-			</div> 
-			<div class="row">
-				<div class="col-md-6 mb-3 mt-3">
+				<div class="col-md-6 mb-3">
 					<label for="status_karyawan" class="form-label">Status Karyawan</label>
 					<input type="text" class="form-control" value="<?php echo $row["status_karyawan"] ?>" readonly>
 				</div> 
@@ -125,7 +118,9 @@
 				</div>
 			</div> 
 		</div>
-		<div class="card px-3 mt-3">
+	</div>
+</div>
+<div class="card px-3 mt-3">
 			<form action="" method="post">
 				<input type="hidden" name="karyawan_nik" value="<?= $row["nik"] ?>">
 				<input type="hidden" name="gaji_pokok" value="<?= $row["gaji_pokok"] ?>">
@@ -147,8 +142,15 @@
 			            <option value="12">Desember</option>
           			</select>
 				</div>
-				<div class="">
-					
+				<div class="mb-3">
+					<label for="tahun" class="form-label">Tahun</label>
+					<input type="text" name="tahun" class="form-control" required maxlength="4">
+				</div>
+				<div class="col mb-3">
+					<button class="btn btn-success" type="submit" name="simpan_button">
+						<i class="fas fas-save"></i>
+						Simpan
+					</button>
 				</div>
 			</form>
 		</div>

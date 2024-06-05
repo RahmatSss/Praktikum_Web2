@@ -47,6 +47,9 @@ switch ($page) {
     case "penggajiantambah":
         include "pages/penggajian/penggajiantambah.php";
         break;
+    case "penggajianhapus":
+        include "pages/penggajian/penggajianhapus.php";
+        break;
     case "pengguna":
         include "pages/pengguna/pengguna.php";
         break;
