@@ -30,7 +30,7 @@
 		        </div>
 		<?php
 		    } else {
-		        $insertSQL = "INSERT INTO penggajian (karyawan_nik, bulan, tahun, gaji_pokok) VALUES ('$karyawan_nik', '$bulan_select', '$tahun', '$gaji_pokok')";
+		        $insertSQL = "INSERT INTO penggajian (karyawan_nik, bulan, tahun, gaji_bayar) VALUES ('$karyawan_nik', '$bulan_select', '$tahun', '$gaji_pokok')";
 		        if (mysqli_query($connection, $insertSQL)) {
 		?>
 		            <div class="alert alert-success" role="alert">
