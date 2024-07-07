@@ -46,7 +46,7 @@ switch ($page) {
                         class="fas fa-users me-2"></i>Karyawan</a>
                 <a href="?page=pilihbulantahunpenggajian" class="list-group-item list-group-item-action bg-transparent second-text <?php echo $penggajian_active ?>"><i
                         class="fas fa-money-bill me-2"></i>Penggajian</a>
-                 <a href="?page=pengguna" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                 <a href="?page=pengguna" class="list-group-item list-group-item-action bg-transparent second-text <?php echo $pengguna_active ?>"><i
                         class="fas fa-user me-2"></i>Pengguna</a>
                 <a href="#" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold"><i
                         class="fas fa-power-off me-2"></i>Logout</a>

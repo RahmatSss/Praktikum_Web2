@@ -6,7 +6,7 @@
   	<a href="?page=pilihkaryawanpenggajian" class="btn btn-primary float-end">
   		<i class="fa fa-arrow-circle-left"></i>
   		Kembali
-  	</a>
+  	</a>	
   </div>
 </div>
 <div id="pesan" class="row mb-3">
